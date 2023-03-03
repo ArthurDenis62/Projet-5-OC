@@ -1,13 +1,23 @@
-const response = await fetch("https://localhost:3000/api/products");
-const data = await response.json();
-console.log(data);
+const url = ("http://localhost:3000/api/products") // Récupère l'API
+const container = document.getElementById("items") // Récupère l'élément 'items'
 
-const.forEach(elt => {
-    itemsContainer.innerHTML += `<a href="./product.html?id=${elt._id}">
-    <article>
-        <img src="${elt.imageUrl}" alt="${elt.altTxt}">
-        <h3 class="productName">${elt.name}</h3>
-        <p class="productDescription">${elt.description}</p>
-    </article>
-    </a>`
-});
+const getArticles = () => {
+    fetch(url)
+    .then(function (res) {
+        return res.json()
+    })
+    .then(function (data) {
+        console.log(data)
+        for(product in data) { // boucle tout les produits
+            container.innerHTML += `<a href="./product.html?id=42">
+            <article>
+              <img src="${data[product].imageUrl}" alt="${data[product].altText}">
+              <h3 class="productName">${data[product].name}</h3>
+              <p class="productDescription">${data[product].description}</p>
+            </article>
+          </a>`
+        }
+    })
+}
+
+getArticles() // Appel la fonction
