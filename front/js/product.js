@@ -24,3 +24,22 @@ fetch(`http://localhost:3000/api/products/${id}`)
     })
 
 // Ecouter le click sur ajouter au panier, donc ajouter le produit au panier
+const addToCart = document.getElementById("addToCart")
+addToCart.addEventListener("click", () => {
+    const addProduct = {
+        quantity : document.getElementById("quantity").value,
+        color : document.getElementById("colors").value,
+        id : id
+    }
+
+addProductLocalStorage = []
+if (localStorage.getItem("addToCart") !== null) {
+    addProductLocalStorage = JSON.parse(localStorage.getItem("addToCart"))
+    addProductLocalStorage.push(addToCart)
+    localStorage.setItem("addToCart", JSON.stringify(addProductLocalStorage))
+} else {
+    addProductLocalStorage.push(addProduct)
+    localStorage.setItem("addToCart", JSON.stringify(addProductLocalStorage))
+}
+
+})
