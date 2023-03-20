@@ -26,20 +26,29 @@ fetch(`http://localhost:3000/api/products/${id}`)
 // Ecouter le click sur ajouter au panier, donc ajouter le produit au panier
 const addToCart = document.getElementById("addToCart")
 addToCart.addEventListener("click", () => {
-    const addProduct = {
+    if (document.getElementById("colors").value.length === 0) {
+        alert("Veillez choisir une couleur")
+        return false
+    }
+    const product = {
         quantity : document.getElementById("quantity").value,
         color : document.getElementById("colors").value,
         id : id
     }
 
-addProductLocalStorage = []
-if (localStorage.getItem("addToCart") !== null) {
-    addProductLocalStorage = JSON.parse(localStorage.getItem("addToCart"))
-    addProductLocalStorage.push(addToCart)
-    localStorage.setItem("addToCart", JSON.stringify(addProductLocalStorage))
-} else {
-    addProductLocalStorage.push(addProduct)
-    localStorage.setItem("addToCart", JSON.stringify(addProductLocalStorage))
-}
-
+let productLocalStorage = []
+    if (localStorage.getItem("cart") !== null) {
+        productLocalStorage = JSON.parse(localStorage.getItem("cart"))
+        /*  Vérifier dans  addProductLocalStorage que y'a pas un produit qui à le même ID, la même couleur, que le addProduct  */
+        const index = productLocalStorage.findIndex(elt => elt.id === product.id && elt.color === product.color)
+        if (index > -1) {
+            productLocalStorage[index].quantity = parseInt(productLocalStorage[index].quantity) + parseInt(product.quantity)
+        } else {
+            productLocalStorage.push(product)
+        }
+        localStorage.setItem("cart", JSON.stringify(productLocalStorage))
+    } else {
+        productLocalStorage.push(product)
+        localStorage.setItem("cart", JSON.stringify(productLocalStorage))
+    }
 })
