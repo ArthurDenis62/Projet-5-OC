@@ -61,9 +61,35 @@ displayTotalObjects(cart)
 
 getArticles()
 
+
+function deleteCanap () {
+    localStorage.removeItem('cart_items')
+}
+
+deleteCanap()
+
+
+
 /* Afficher la liste des produits dans le panier */
 /* Pouvoir modifier la quantité */
 /* Supprimer les éléments du panier */
 /* Récupérer les données du formulaire */
+function getContact () {
+    let firstName = document.getElementById("FirstName").value; 
+    let lastName = document.getElementById("LastName").value;
+    let address = document.getElementById("Address").value;
+    let city = document.getElementById("City").value;
+    let email = document.getElementById("Email").value;
+
+    let contact = { 
+        firstName: firstName,
+        lastName: lastName,
+        address: address,
+        city: city,
+        email: email,
+    };
+}
+
+
 /* Valider les données */
 /* Envoyer à l'API */
