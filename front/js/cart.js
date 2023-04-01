@@ -36,6 +36,8 @@ const getArticles = () => {
                                     </article>`
         }
         displayTotalPrices(cart, data)
+        deleteCanap(data)
+        quantityNbr()
     })
 }
 
@@ -61,35 +63,37 @@ displayTotalObjects(cart)
 
 getArticles()
 
-
-function deleteCanap () {
-    localStorage.removeItem('cart_items')
+function quantityNbr () {
+    const quantityInputs = Array.from(document.querySelectorAll('.itemQuantity'))
+    quantityInputs.forEach((entry, index) => {
+        entry.addEventListener('change', (e) => {
+            console.log(e.target.value)
+            //Récuperer le localStorage
+            //Dans le tableau du localStorage (cart), à l'index on change la quantity (ligne 70)
+            //Re sauvegarder le localStorage et on met a jour les totaux
+        })
+    })
 }
 
-deleteCanap()
-
-
+function deleteCanap (products) {
+    const deleteButtons = Array.from(document.querySelectorAll(".deleteItem"))
+    deleteButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            const cart = JSON.parse(localStorage.getItem('cart'))
+            cart.splice(index, 1)
+            localStorage.setItem("cart", JSON.stringify(cart))
+            button.closest('article').remove()
+            displayTotalObjects(cart)
+            displayTotalPrices(cart, products)
+        })
+    })
+}
 
 /* Afficher la liste des produits dans le panier */
 /* Pouvoir modifier la quantité */
 /* Supprimer les éléments du panier */
 /* Récupérer les données du formulaire */
-function getContact () {
-    let firstName = document.getElementById("FirstName").value; 
-    let lastName = document.getElementById("LastName").value;
-    let address = document.getElementById("Address").value;
-    let city = document.getElementById("City").value;
-    let email = document.getElementById("Email").value;
-
-    let contact = { 
-        firstName: firstName,
-        lastName: lastName,
-        address: address,
-        city: city,
-        email: email,
-    };
-}
-
+// formData
 
 /* Valider les données */
 /* Envoyer à l'API */
