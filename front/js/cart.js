@@ -37,7 +37,7 @@ const getArticles = () => {
         }
         displayTotalPrices(cart, data)
         deleteCanap(data)
-        quantityNbr()
+        quantityNbr(data)
     })
 }
 
@@ -63,14 +63,19 @@ displayTotalObjects(cart)
 
 getArticles()
 
-function quantityNbr () {
+function quantityNbr (products) {
     const quantityInputs = Array.from(document.querySelectorAll('.itemQuantity'))
     quantityInputs.forEach((entry, index) => {
-        entry.addEventListener('change', (e) => {
-            console.log(e.target.value)
+        entry.addEventListener('change', (event) => {
+            console.log(event.target.value)
             //Récuperer le localStorage
+            const cart = JSON.parse(localStorage.getItem('cart'))
             //Dans le tableau du localStorage (cart), à l'index on change la quantity (ligne 70)
+            cart[index].quantity = event.target.value
             //Re sauvegarder le localStorage et on met a jour les totaux
+            localStorage.setItem("cart", JSON.stringify(cart))
+            displayTotalObjects(cart)
+            displayTotalPrices(cart, products)
         })
     })
 }
@@ -89,9 +94,10 @@ function deleteCanap (products) {
     })
 }
 
-/* Afficher la liste des produits dans le panier */
-/* Pouvoir modifier la quantité */
-/* Supprimer les éléments du panier */
+function formulaireData () {
+    const firstNameInput = document.getElementById('firstName');
+}
+
 /* Récupérer les données du formulaire */
 // formData
 
