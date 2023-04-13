@@ -94,9 +94,29 @@ function deleteCanap (products) {
     })
 }
 
-function formulaireData () {
-    const firstNameInput = document.getElementById('firstName');
+function formOnSubmit () {
+    const formInput = document.querySelector('.cart__order__form')
+    formInput.addEventListener('submit', (event) => {
+        event.preventDefault();
+        console.log(event.target)
+        const dataForm = new FormData(formInput);
+        console.log(dataForm.get('firstName'))
+        if (dataForm.get('firstName').length < 3) {
+            alert('Ce nom est trop court !')
+            return false
+        }
+        const contact = {
+            firstName : dataForm.get('firstName'),
+            lastName : dataForm.get('lastName'),
+            address : dataForm.get('address'),
+            city : dataForm.get('city'),
+            email : dataForm.get('email')
+        }
+        //Créer un tableau qui
+        const products = []
+    })
 }
+formOnSubmit()
 
 /* Récupérer les données du formulaire */
 // formData
