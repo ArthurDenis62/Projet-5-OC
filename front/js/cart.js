@@ -112,8 +112,16 @@ function formOnSubmit () {
             city : dataForm.get('city'),
             email : dataForm.get('email')
         }
-        //Créer un tableau qui
-        const products = []
+        const products = cart.map(elt => elt.id)
+        const order = {
+            contact,
+            products
+        }
+        fetch("http://localhost:3000/api/order", {
+            method: 'POST',
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+            body: JSON.stringify(order)
+          }).then(response => response.json()).then(data => console.log(data))
     })
 }
 formOnSubmit()
