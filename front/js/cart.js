@@ -100,11 +100,16 @@ function formOnSubmit () {
         event.preventDefault();
         console.log(event.target)
         const dataForm = new FormData(formInput);
-        console.log(dataForm.get('firstName'))
-        if (dataForm.get('firstName').length < 3) {
-            alert('Ce nom est trop court !')
+        const isValid = formVerification(dataForm)
+        if (!isValid) {
             return false
         }
+        console.log(dataForm.get('firstName'))
+        /*if (dataForm.get('firstName').trim().length < 3 || dataForm.get('lastName').trim().length < 3 || dataForm.get('address').trim().length < 3 || dataForm.get('city').trim().length < 3) {
+            alert('Ce nom est trop court !')
+            return false
+        }*/
+
         const contact = {
             firstName : dataForm.get('firstName'),
             lastName : dataForm.get('lastName'),
@@ -117,17 +122,47 @@ function formOnSubmit () {
             contact,
             products
         }
-        fetch("http://localhost:3000/api/order", {
+        fetch("http://localhost:3000/api/products/order", {
             method: 'POST',
-            headers: {"Content-type": "application/json; charset=UTF-8"},
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
             body: JSON.stringify(order)
-          }).then(response => response.json()).then(data => console.log(data))
+          }).then(response => response.json()).then(data => {
+            //Rediriger vers une autre page (confirmation)
+            console.log(data)
+            window.location.href = `../html/confirmation.html?orderId=${data.orderId}`;
+          })
     })
 }
 formOnSubmit()
 
-/* Récupérer les données du formulaire */
-// formData
-
-/* Valider les données */
-/* Envoyer à l'API */
+function formVerification (dataForm) {
+    let isValid = true
+    if (dataForm.get('firstName').trim().length < 2) {
+        const firstName = document.getElementById("firstNameErrorMsg")
+        firstName.innerText = 'Votre prénom est trop court'
+        isValid = false
+    }
+    if (dataForm.get('lastName').trim().length < 2) {
+        const lastName = document.getElementById("lastNameErrorMsg")
+        lastName.innerText = 'Votre nom est trop court'
+        isValid = false
+    }
+    if (dataForm.get('address').trim().length < 5) {
+        const address = document.getElementById("addressErrorMsg")
+        address.innerText = 'Votre addresse est trop courte'
+        isValid = false
+    }
+    if (dataForm.get('city').trim().length < 3) {
+        const city = document.getElementById("cityErrorMsg")
+        city.innerText = 'Votre nom de ville est trop court'
+        isValid = false
+    }
+    if (dataForm.get('email').trim().length < 3 || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(dataForm.get('email').trim()))) {
+        const email = document.getElementById("emailErrorMsg")
+        email.innerText = 'Votre email ne correspond pas au bon format'
+        isValid = false
+    }
+    return isValid
+} 
