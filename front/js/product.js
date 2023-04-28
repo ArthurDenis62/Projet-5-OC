@@ -21,6 +21,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
             document.querySelector('#colors')
             .innerHTML += `<option value="${product.colors[i]}">${product.colors[i]}</option>`
         }
+        document.title = `${product.name}`
     })
 
 // Ecouter le click sur ajouter au panier, donc ajouter le produit au panier
@@ -28,6 +29,10 @@ const addToCart = document.getElementById("addToCart")
 addToCart.addEventListener("click", () => {
     if (document.getElementById("colors").value.length === 0) {
         alert("Veillez choisir une couleur")
+        return false
+    }
+    if (parseInt(document.getElementById("quantity").value) === 0) {
+        alert("Veillez choisir une quantité valide")
         return false
     }
     const product = {
@@ -51,4 +56,5 @@ let productLocalStorage = []
         productLocalStorage.push(product)
         localStorage.setItem("cart", JSON.stringify(productLocalStorage))
     }
+    window.location.href = "./cart.html"
 })
