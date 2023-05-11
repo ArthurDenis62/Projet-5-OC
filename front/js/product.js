@@ -2,12 +2,7 @@ let searchParams = new URLSearchParams(window.location.search)
 const id = searchParams.get("id")
 console.log(id)
 
-// Récupérer ID depuis l'URL
-fetch(`http://localhost:3000/api/products/${id}`)
-    .then(function (res) {
-        return res.json()
-    })
-    .then(product => {
+const displayProduct = (product) => {
         console.log(product)
         document.querySelector(".item__img")
         .innerHTML = `<img src="${product.imageUrl}" alt="${product.altText}">`
@@ -22,6 +17,15 @@ fetch(`http://localhost:3000/api/products/${id}`)
             .innerHTML += `<option value="${product.colors[i]}">${product.colors[i]}</option>`
         }
         document.title = `${product.name}`
+}
+
+// Récupérer ID depuis l'URL
+fetch(`http://localhost:3000/api/products/${id}`)
+    .then(function (res) {
+        return res.json()
+    })
+    .then(product => {
+        displayProduct(product)
     })
 
 // Ecouter le click sur ajouter au panier, donc ajouter le produit au panier
@@ -41,10 +45,10 @@ addToCart.addEventListener("click", () => {
         id : id
     }
 
-let productLocalStorage = []
+    let productLocalStorage = []
     if (localStorage.getItem("cart") !== null) {
         productLocalStorage = JSON.parse(localStorage.getItem("cart"))
-        /*  Vérifier dans  addProductLocalStorage que y'a pas un produit qui à le même ID, la même couleur, que le addProduct  */
+        /*  Vérifier dans  ProductLocalStorage que y'a pas un produit qui à le même ID, la même couleur, que le addProduct  */
         const index = productLocalStorage.findIndex(elt => elt.id === product.id && elt.color === product.color)
         if (index > -1) {
             productLocalStorage[index].quantity = parseInt(productLocalStorage[index].quantity) + parseInt(product.quantity)
@@ -56,5 +60,5 @@ let productLocalStorage = []
         productLocalStorage.push(product)
         localStorage.setItem("cart", JSON.stringify(productLocalStorage))
     }
-    window.location.href = "./cart.html"
+        window.location.href = "./cart.html"
 })
