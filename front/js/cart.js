@@ -110,11 +110,6 @@ function formOnSubmit () {
             return false
         }
         console.log(dataForm.get('firstName'))
-        /*if (dataForm.get('firstName').trim().length < 3 || dataForm.get('lastName').trim().length < 3 || dataForm.get('address').trim().length < 3 || dataForm.get('city').trim().length < 3) {
-            alert('Ce nom est trop court !')
-            return false
-        }*/
-
         const contact = {
             firstName : dataForm.get('firstName'),
             lastName : dataForm.get('lastName'),
@@ -134,7 +129,6 @@ function formOnSubmit () {
             },
             body: JSON.stringify(order)
           }).then(response => response.json()).then(data => {
-            //Rediriger vers une autre page (confirmation)
             console.log(data)
             window.location.href = `../html/confirmation.html?orderId=${data.orderId}`;
           })
