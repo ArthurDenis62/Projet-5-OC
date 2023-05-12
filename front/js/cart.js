@@ -1,9 +1,9 @@
 /* Récupérer tout les produits dans le panier  */
-const url = ("http://localhost:3000/api/products")
+const url = "http://localhost:3000/api/products"
 const container = document.getElementById("cart__items")
 const cart = JSON.parse(localStorage.getItem("cart"))
 
-const displayProductPanier = (index) => {
+const displayProductPanier = (index, data) => {
     console.log(cart[index])
     const product = data.find(elt => elt._id === cart[index].id)
     console.log(product)
@@ -38,7 +38,7 @@ const getArticles = () => {
     .then(function (data) {
         console.log(data)
         for (const index in cart) { // boucle tout les produits
-            displayProductPanier(index)
+            displayProductPanier(index, data)
         }
         displayTotalPrices(cart, data)
         deleteCanap(data)
@@ -158,7 +158,7 @@ function formVerification (dataForm) {
         city.innerText = 'Votre nom de ville est trop court'
         isValid = false
     }
-    if (dataForm.get('email').trim().length < 3 || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(dataForm.get('email').trim()))) {
+    if (dataForm.get('email').trim().length < 3 && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(dataForm.get('email').trim()))) {
         const email = document.getElementById("emailErrorMsg")
         email.innerText = 'Votre email ne correspond pas au bon format'
         isValid = false
