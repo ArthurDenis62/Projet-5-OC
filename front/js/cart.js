@@ -72,7 +72,10 @@ function quantityNbr (products) {
     const quantityInputs = Array.from(document.querySelectorAll('.itemQuantity'))
     quantityInputs.forEach((entry, index) => {
         entry.addEventListener('change', (event) => {
-            console.log(event.target.value)
+            if (parseInt(event.target.value) <= 0 || parseInt(event.target.value) > 100) {
+                alert("Veillez choisir une quantité valide")
+                return false
+            }
             //Récuperer le localStorage
             const cart = JSON.parse(localStorage.getItem('cart'))
             //Dans le tableau du localStorage (cart), à l'index on change la quantity (ligne 70)
@@ -130,6 +133,7 @@ function formOnSubmit () {
             body: JSON.stringify(order)
           }).then(response => response.json()).then(data => {
             console.log(data)
+            localStorage.clear()
             window.location.href = `../html/confirmation.html?orderId=${data.orderId}`;
           })
     })
@@ -138,14 +142,14 @@ formOnSubmit()
 
 function formVerification (dataForm) {
     let isValid = true
-    if (dataForm.get('firstName').trim().length < 2) {
+    if (dataForm.get('firstName').trim().length < 2 || !/^([^0-9\s_.]+)+[a-zA-Z]*((\s?)*[a-zA-Z](\s?)*)*$/.test(dataForm.get('firstName').trim())) {
         const firstName = document.getElementById("firstNameErrorMsg")
-        firstName.innerText = 'Votre prénom est trop court'
+        firstName.innerText = 'Votre prénom est incorrect'
         isValid = false
     }
-    if (dataForm.get('lastName').trim().length < 2) {
+    if (dataForm.get('lastName').trim().length < 2 || !/^([^0-9\s_.]+)+[a-zA-Z]*((\s?)*[a-zA-Z](\s?)*)*$/.test(dataForm.get('lastName').trim())) {
         const lastName = document.getElementById("lastNameErrorMsg")
-        lastName.innerText = 'Votre nom est trop court'
+        lastName.innerText = 'Votre nom est incorrect'
         isValid = false
     }
     if (dataForm.get('address').trim().length < 5) {
@@ -158,7 +162,7 @@ function formVerification (dataForm) {
         city.innerText = 'Votre nom de ville est trop court'
         isValid = false
     }
-    if (dataForm.get('email').trim().length < 3 && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(dataForm.get('email').trim()))) {
+    if (dataForm.get('email').trim().length < 3 || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(dataForm.get('email').trim()))) {
         const email = document.getElementById("emailErrorMsg")
         email.innerText = 'Votre email ne correspond pas au bon format'
         isValid = false

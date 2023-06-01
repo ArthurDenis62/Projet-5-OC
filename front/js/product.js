@@ -35,7 +35,7 @@ addToCart.addEventListener("click", () => {
         alert("Veillez choisir une couleur")
         return false
     }
-    if (parseInt(document.getElementById("quantity").value) === 0) {
+    if (parseInt(document.getElementById("quantity").value) <= 0 || parseInt(document.getElementById("quantity").value) > 100) {
         alert("Veillez choisir une quantité valide")
         return false
     }
