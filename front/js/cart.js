@@ -102,6 +102,21 @@ function deleteCanap (products) {
     })
 }
 
+const formFirstName = document.getElementById('firstName')
+const formLastName = document.getElementById('lastName')
+formFirstName.addEventListener('keydown', function(event) {
+    const keyCode = event.keyCode || event.which;
+    if (keyCode >= 48 && keyCode <= 57) {
+        event.preventDefault();
+    }
+});
+formLastName.addEventListener('keydown', function(event) {
+    const keyCode = event.keyCode || event.which;
+    if (keyCode >= 48 && keyCode <= 57) {
+        event.preventDefault();
+    }
+});
+
 function formOnSubmit () {
     const formInput = document.querySelector('.cart__order__form')
     formInput.addEventListener('submit', (event) => {
